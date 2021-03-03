@@ -10,8 +10,7 @@ do
   if [[ ${#WORD} == 1 ]] && [[ $WORD != [aio] ]]; then
     continue
   fi
-  #Fix this later
-  if [[ ${#WORD} -lt 2 ]] && [[$WORD != '[^aeiou]']; then
+  if [[ $WORD != *[aeiou]* ]]; then
     continue
   fi
   #Print the new edited text

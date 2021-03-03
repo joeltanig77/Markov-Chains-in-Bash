@@ -49,8 +49,13 @@ echo "$LINE"
   echo $COMBINED
   #grep "$COMBINED" < $FILE
   cat $FILE | grep "^$COMBINED"
-  LINE=$(grep "^$COMBINED" $FILE | $SHUF | tr -t '[:blank:]' '[\n*]' | awk 'FNR == 4 {print}')
-  echo $LINE
+  FOURTHWORD=$(grep "^$COMBINED" $FILE | $SHUF | tr -t '[:blank:]' '[\n*]' | awk 'FNR == 4 {print}')
+  echo $FOURTHWORD
+
+  COMBINED="$FIRSTWORD $SECONDWORD $THIRDWORD $FOURTHWORD"
+  echo $COMBINED
+
+
 #done
 
 
