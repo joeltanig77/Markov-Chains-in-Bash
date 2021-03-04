@@ -1,12 +1,14 @@
 #!/bin/sh
 FILE=$1
 WORDSTOPRINT=$2
-FIRSTWORD="^"
-SECONDWORD="^"
-THIRDWORD="^"
-COMBINED="^"
-FOURTHWORD="^"
-LINE='^'
+FIRSTWORD=""
+SECONDWORD=""
+THIRDWORD=""
+COMBINED=""
+FOURTHWORD=""
+LINE=""
+SPACE=" "
+FINAL=""
 SHUF=$(command -v shuf)
 if [ ! -x "$SHUF" ]; then
   if [ -x "./shuffle" ]; then
@@ -35,7 +37,8 @@ fi
 
 #Get random line from shuffle.c
 LINE=$($SHUF < $FILE | head -n 1)
-#echo "$LINE"
+echo "$LINE"
+printf "\n"
 
 while [[ $WORDSTOPRINT != 0 ]]; do
   let "WORDSTOPRINT -= 1"
@@ -54,9 +57,10 @@ while [[ $WORDSTOPRINT != 0 ]]; do
   COMBINED="$FIRSTWORD $SECONDWORD $THIRDWORD $FOURTHWORD"
   #echo $COMBINED
   LINE=$COMBINED
-  echo $COMBINED
-  
+  FINAL+=$FOURTHWORD$SPACE
+
 done
+echo $FINAL
 
 
 
