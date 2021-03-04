@@ -6,6 +6,7 @@ SECONDWORD="^"
 THIRDWORD="^"
 COMBINED="^"
 FOURTHWORD="^"
+LINE='^'
 SHUF=$(command -v shuf)
 if [ ! -x "$SHUF" ]; then
   if [ -x "./shuffle" ]; then
@@ -34,29 +35,28 @@ fi
 
 #Get random line from shuffle.c
 LINE=$($SHUF < $FILE | head -n 1)
-echo "$LINE"
+#echo "$LINE"
 
-#while [[ $WORDSTOPRINT != 0 ]]; do
-  let "WORDSTOPRINT -= 4"
+while [[ $WORDSTOPRINT != 0 ]]; do
+  let "WORDSTOPRINT -= 1"
   FIRSTWORD=$(echo "$LINE" | tr -t '[:blank:]' '[\n*]' | awk 'FNR == 2 {print}')
-  echo $FIRSTWORD
+  #echo $FIRSTWORD
   SECONDWORD=$(echo "$LINE" | tr -t '[:blank:]' '[\n*]' | awk 'FNR == 3 {print}')
-  echo $SECONDWORD
+  #echo $SECONDWORD
   THIRDWORD=$(echo "$LINE" | tr -t '[:blank:]' '[\n*]' | awk 'FNR == 4 {print}')
-  echo $THIRDWORD
+  #echo $THIRDWORD
   COMBINED="$FIRSTWORD $SECONDWORD $THIRDWORD"
-  printf "\n"
-  echo $COMBINED
-  #grep "$COMBINED" < $FILE
-  cat $FILE | grep "^$COMBINED"
+  #printf "\n"
+  #echo $COMBINED
+  #cat $FILE | grep "^$COMBINED"
   FOURTHWORD=$(grep "^$COMBINED" $FILE | $SHUF | tr -t '[:blank:]' '[\n*]' | awk 'FNR == 4 {print}')
-  echo $FOURTHWORD
-
+  #echo $FOURTHWORD
   COMBINED="$FIRSTWORD $SECONDWORD $THIRDWORD $FOURTHWORD"
+  #echo $COMBINED
+  LINE=$COMBINED
   echo $COMBINED
-
-
-#done
+  
+done
 
 
 
