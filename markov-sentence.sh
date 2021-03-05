@@ -7,8 +7,8 @@ THIRDWORD=""
 COMBINED=""
 FOURTHWORD=""
 LINE=""
-SPACE=" "
 FINAL=""
+#Run shuffle program
 SHUF=$(command -v shuf)
 if [ ! -x "$SHUF" ]; then
   if [ -x "./shuffle" ]; then
@@ -25,6 +25,11 @@ if [[ ! -f $FILE ]]; then
   exit -1
 fi
 
+if [[ -z $2 ]]; then
+  echo "No number argument supplied"
+  exit -1
+fi
+
 if [[ $2 -lt 0 ]]; then
   echo "The argument number must be greater than 0"
   exit -1
@@ -37,35 +42,18 @@ fi
 
 #Get random line from shuffle.c
 LINE=$($SHUF < $FILE | head -n 1)
-echo "$LINE"
-printf "\n"
-
+#Prints until the argument $2 is met
 while [[ $WORDSTOPRINT != 0 ]]; do
+  #Grab words using awk by col
+  FIRSTWORD=$(echo "$LINE" | awk '{print $2}')
+  SECONDWORD=$(echo "$LINE" | awk '{print $3}')
+  THIRDWORD=$(echo "$LINE" | awk '{print $4}')
+  LINE="$FIRSTWORD $SECONDWORD $THIRDWORD"
+  #Grabs a random line with the starting three words
+  LINE=$(grep "^$LINE" $FILE | $SHUF | head -n 1)
+  FOURTHWORD=$(echo "$LINE" | awk '{print " "$4}')
+  #Grab the fourth word and add it to the final string
+  FINAL+=$FOURTHWORD
   let "WORDSTOPRINT -= 1"
-  FIRSTWORD=$(echo "$LINE" | tr -t '[:blank:]' '[\n*]' | awk 'FNR == 2 {print}')
-  #echo $FIRSTWORD
-  SECONDWORD=$(echo "$LINE" | tr -t '[:blank:]' '[\n*]' | awk 'FNR == 3 {print}')
-  #echo $SECONDWORD
-  THIRDWORD=$(echo "$LINE" | tr -t '[:blank:]' '[\n*]' | awk 'FNR == 4 {print}')
-  #echo $THIRDWORD
-  COMBINED="$FIRSTWORD $SECONDWORD $THIRDWORD"
-  #printf "\n"
-  #echo $COMBINED
-  #cat $FILE | grep "^$COMBINED"
-  FOURTHWORD=$(grep "^$COMBINED" $FILE | $SHUF | tr -t '[:blank:]' '[\n*]' | awk 'FNR == 4 {print}')
-  #echo $FOURTHWORD
-  COMBINED="$FIRSTWORD $SECONDWORD $THIRDWORD $FOURTHWORD"
-  #echo $COMBINED
-  LINE=$COMBINED
-  FINAL+=$FOURTHWORD$SPACE
-
 done
 echo $FINAL
-
-
-
-
-
-
-
-#Use awk

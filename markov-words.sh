@@ -10,6 +10,7 @@ do
   if [[ ${#WORD} == 1 ]] && [[ $WORD != [aio] ]]; then
     continue
   fi
+  #If not a word with a vowel, skip
   if [[ $WORD != *[aeiou]* ]]; then
     continue
   fi
