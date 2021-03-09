@@ -30,7 +30,7 @@ if [[ -z $2 ]]; then
   exit -1
 fi
 
-if [[ $2 -lt 0 ]]; then
+if [[ $2 -lt 1 ]]; then
   echo "The argument number must be greater than 0"
   exit -1
 fi
